@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html lang="zn-CH">
+<head>
+	<meta charset="gb2312">
+	<title>另类写法的手风琴效果</title>
+	<link href="images/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="containter">
+<div class="article">
+<h1>另类写法的手风琴效果</h1>
+<div><img src="images/手风琴效果_1.jpg" alt="" /></div>
+<p>博客首页焦点图换成手风琴效果已经很长一段时间了，应WEB前端开发的网友及群友的要求，今天小剧来写写我的手风琴效果的实现方法</p>
+<p>其实小剧在写手风琴效果的时候并没有参考其他人的代码书写方式，前一段时间认真研究了别人的实现方式才发现自己的不足。但如此迥异写法竟然实现了同一种效果确实让我很是惊奇。一句话说说我的手风琴效果与别人的区别吧：我的是并列的元素分别显示不同的风景，而别人的是通过相互重叠遮盖显示。可能说的不是很清楚，上面是示意图：</p>
+<p>相信看了图解应该思路会清晰很多，说白了就是css给对象设置一个是改变宽度，一个是absolute之后的left。</p>
+<p>下面的代码是小剧实现手风琴效果的全部思路，CSS部分主要的亮点是对LI设置overflow：hidden，来隐藏宽度之外的图像。JS因为是借助于Jquery框架实现，亮点就只在于对时间的延迟处理。</p>
+
+<h3>HTML代码</h3>
+<p>html布局是动画的基石，这里小剧采用了非常简洁的ul布局，每个li是显示图像的框框，通过改变li的宽度来部分或完整地显示图像</p>
+<blockquote class="codeArea">
+&lt;ul id=&quot;lay_accordion&quot;&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;li&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;a href=&quot;http://bh-lay.com/lab&quot; target=&quot;blank&quot;&gt;&lt;span&gt;小剧实验室&lt;/span&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;img src=&quot;http://bh-lay.com/demo/images/3a.jpg&quot; alt=&quot;小剧实验室&quot;/&gt;&lt;/a&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;/li&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;li&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;a href=&quot;http://bh-lay.com/writing&quot; target=&quot;blank&quot;&gt;&lt;span&gt;自言自语&lt;/span&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;img src=&quot;http://bh-lay.com/demo/images/1a.jpg&quot; alt=&quot;自言自语&quot;/&gt;&lt;/a&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;/li&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;li&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;a href=&quot;http://bh-lay.com/works&quot; target=&quot;blank&quot;&gt;&lt;span&gt;小剧作品&lt;/span&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;img src=&quot;http://bh-lay.com/demo/images/4a.jpg&quot; alt=&quot;小剧作品&quot;/&gt;&lt;/a&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;/li&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;li&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;a href=&quot;http://bh-lay.com/share&quot; target=&quot;blank&quot;&gt;&lt;span&gt;我的分享&lt;/span&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;img src=&quot;http://bh-lay.com/demo/images/5a.jpg&quot; alt=&quot;我的分享&quot;/&gt;&lt;/a&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;/li&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;li&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;a href=&quot;http://bh-lay.com/topic/intiate.html&quot; target=&quot;blank&quot;&gt;&lt;span&gt;创业团&lt;/span&gt;<br />
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;img src=&quot;http://bh-lay.com/demo/images/7a.jpg&quot; alt=&quot;创业团&quot;/&gt;&lt;/a&gt;<br />
+&nbsp;&nbsp;&nbsp; &lt;/li&gt;<br />
+&lt;/ul&gt;
+</blockquote>
+<h3>CSS代码</h3>
+<blockquote class="codeArea">
+#lay_accordion{width:650px;height:240px;} <br/>
+#lay_accordion li{width:128px;height:240px;float:left;overflow:hidden;position:relative;}<br/>
+#lay_accordion span,#lay_accordion b{height:240px;position:absolute;top:0px;left:0;}<br/>
+#lay_accordion span{width:20px;color:#fff;font-size:20px;padding:30px 12px;}<br/>
+#lay_accordion b{width:45px;background:#000;opacity:0.3;filter:alpha(opacity=30);}<br/>
+</blockquote>
+<h3>JS部分</h3>
+<p>为了简化js的书写过程，小剧事先计算好li的最大宽度，然后根据总宽度和li的个数计算出li的最小宽度，默认时每个li宽度一致，当鼠标经过某个li的时候，当前的li显示为最大宽度，其余的li缩小到最小宽度，鼠标移出恢复默认。当然，这中间有个延迟判断，从而保证动画的稳定。</p>
+<blockquote class="codeArea">
+function accordion(){<br />
+&nbsp;&nbsp; &nbsp;var pic = $('#lay_accordion li');<br />
+&nbsp;&nbsp; &nbsp;var i=0;//li的索引值<br />
+&nbsp;&nbsp; &nbsp;var timer;<br />
+&nbsp;&nbsp; &nbsp;maxWidth=500;<br />
+&nbsp;&nbsp; &nbsp;minWidth=(pic.parent().parent().width()-maxWidth)/4;<br />
+&nbsp;&nbsp; &nbsp;for(i;i&lt;5;i++){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pic.eq(i).prepend('&lt;b&gt;&lt;/b&gt;');<br />
+&nbsp;&nbsp; &nbsp;}<br />
+&nbsp;&nbsp; &nbsp;pic.mouseenter(function(){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;clearTimeout(timer);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;i=pic.index(this);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;timer = setTimeout(function(){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pic.not(pic.eq(i)).animate({width:minWidth},'100');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pic.eq(i).animate({width:maxWidth},'100');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},200);<br />
+&nbsp;&nbsp; &nbsp;}).parent().mouseleave(function(){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;timer = setTimeout(function(){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pic.animate({width:pic.parent().parent().width()/5},'slow');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},500);<br />
+&nbsp;&nbsp; &nbsp;});<br />
+}
+</blockquote>
+
+</div>
+</div>
+</body>
+</html>

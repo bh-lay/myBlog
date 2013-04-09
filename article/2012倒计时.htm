@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>[!--pagetitle--]_水院通</title>
+<link href="[!--news.url--]skin/diy/images/favicon.ico" rel="shortcut icon">
+<meta name="keywords" content="[!--pagekey--]" />
+</head>
+<body>
+
+
+<div class="wrapC">
+<style type="text/css">
+body{background:#DFEAFF;margin: 0px;padding: 0px;font-family: Arial, Helvetica, sans-serif;}
+.wrapC{height:510px;width: 766px;background: url(images/2012.jpg) no-repeat;margin: 80px auto 0px;padding-top: 100px;color: #003eb0;}
+#times {font-size: 36px;line-height: 60px;height: 60px;padding-left: 80px;}
+.text {height: 300px;width: 520px;overflow: auto;padding: 10px;line-height: 1.5em;margin-bottom: 20px;}
+.text p {margin: 2em 0px;font-size: 12px;text-indent: 2em;}
+.saying {color:#9af;font-size:12px;float:left;width:380px;line-height: 18px;}
+.saying img {display: none;}
+.fenxiang {float: left;height: 50px;width: 180px;}
+#uyan_frame{padding:0px;}
+#uyan_top{display:none;}
+</style>
+  <div id="times">227天3小时44分24秒</div>
+<script language="JavaScript">
+function fresh(){
+	var endtime=new Date("2012/12/21,15:14:35");
+	var nowtime = new Date();
+	var leftsecond=parseInt((endtime.getTime()-nowtime.getTime())/1000);
+	d=parseInt(leftsecond/3600/24);
+	h=parseInt((leftsecond/3600)%24);
+	m=parseInt((leftsecond/60)%60);
+	s=parseInt(leftsecond%60);
+	$("#times").html(d+"天"+h+"小时"+m+"分"+s+"秒");
+	$("title").html("末日:"+s+"秒"+m+"分"+h+"小时"+d+"天");
+	if(leftsecond<=0){
+		$("#times").html('\u554a\uff01\u6211\u7adf\u7136\u8fd8\u6d3b\u7740');
+		clearInterval(sh);
+	} 
+}
+fresh()
+var sh;
+sh=setInterval(fresh,1000);
+</script>
+<div class="text">
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1605927" async=""></script>
+<!-- UY END -->
+</div>
+<div class="saying">本页面内容纯属虚构，切勿按此安排正常生活！<br />版权所有&copy;剧中人 <a href="http://bh-lay.com"><strong>小剧客栈</strong></a></div>
+<div class="fenxiang"><script type="text/javascript">
+(function(){
+var p = {
+url:location.href,
+showcount:'1',/*是否显示分享总数,显示：'1'，不显示：'0' */
+desc:'世界末日只剩【'+$('#times').html()+'】了，木有机票滴肿么办',/*默认分享理由(可选)*/
+summary:'世界末日了肿么办，2012了肿么办，木有机票滴肿么办',/*分享摘要(可选)*/
+title:'世界末日只剩【'+$('#times').html()+'】了，快来看看',/*分享标题(可选)*/
+site:'小剧客栈',/*分享来源 如：腾讯网(可选)*/
+pics:'http://bh-lay.com/d/file/works/2012-04-16/95d996188c67b9aa4e5fc426a4a5baa6.jpg', /*分享图片的路径(可选)*/
+style:'101',
+width:600,
+height:370
+};
+var s = [];
+for(var i in p){
+s.push(i + '=' + encodeURIComponent(p[i]||''));
+}
+document.write(['<a version="1.0" class="qzOpenerDiv" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?',s.join('&'),'" target="_blank">分享</a>'].join(''));
+})();
+</script>
+<script src="http://qzonestyle.gtimg.cn/qzone/app/qzlike/qzopensl.js#jsdate=20111201" charset="utf-8"></script></div>
+</div>
+
+
+
+
+
+
+
+
+
+</body></html>

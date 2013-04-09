@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+<link href="images/style.css" rel="stylesheet" type="text/css" />
+ </head>
+
+ <body>
+  <p>之前博客留言一直很少，也没怎么在意，最近查看我的留言板时，感觉页面多少有点儿拥挤，于是就想着设置一下留言板分页条数！</p>
+<p>结果我是在留言板模板里没有找到相关设置，插件-管理留言里也没找到。</p>
+<p>于是我就直接到ftp直接到留言板对应文件&ldquo;e/tool/gbook/index.php&rdquo;查看，让我眼前一亮的是&ldquo;$line=$public_r['gb_num'];//每页显示条数&rdquo;这段代码。我查了查&ldquo;$public_r['gb_num']&rdquo;，并没有找到相关参数，于是我试探性的将这段代码改为一个数字&ldquo;5&rdquo;，然后到后台更新动态页面，然而并没有我预想的效果出现！</p>
+<p>想到之前更改会员模板时的经验，我习惯性的去&ldquo;template&rdquo;目录下去找与留言板相关的模板，果不其然，有一个名为&ldquo;gbooktemp.txt&rdquo;的文件，打开查看内容与之前文件html之前的内容一模一样。和之前操作一样，我将&ldquo;$public_r['gb_num']&rdquo;改为数值&ldquo;5&rdquo;，再更新动态页面，果然有了效果！</p>
+<p>具体什么原因我也说不出来，可能&ldquo;index.php&rdquo;是&ldquo;gbooktemp.txt&rdquo;与留言板模板并接生成的文档吧，导致直接修改&ldquo;index.php&rdquo;后更新动态页面致使重新加载&ldquo;gbooktemp.txt&rdquo;覆盖了原来的操作吧！当然，这里仅仅是我的猜测而已！</p>
+<h3>我的解决方案</h3>
+<p>前面都是废话，这里谈谈我总结出的&ldquo;更改帝国cms留言板分页&rdquo;的解决方案</p>
+<p>找到&ldquo;e/data/template/gbooktemp.txt&rdquo;文件<br />
+下数37行左右有&ldquo;$line=$public_r['gb_num'];//每页显示条数&rdquo;这段代码<br />
+将&ldquo;$public_r['gb_num']&rdquo;改为你希望出现的条数<br />
+更新动态动态页面，即可看见效果！</p>
+<p>&nbsp;</p>
+<p>PS：其实在&ldquo;系统-系统设置-系统参数设置-信息设置-留言每页显示&rdquo;可以设置留言板分页条数，只是这个选项很多人不知道，而且很多帝国网站都是升级过来的，奇怪的是这个设置部分网站无法生效，所以就采用了之前所说的阉割方法来解决！</p>
+ </body>
+</html>

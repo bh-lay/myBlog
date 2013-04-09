@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="zn-CH">
+<head>
+	<meta charset="gb2312">
+	<title>实验室-图像浏览器jquery插件</title>
+	<link href="images/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="containter">
+<div class="article">
+<h1>实验室-图像浏览器jquery插件</h1>
+<p>其实图像浏览器插件应该算是小剧目前最得意的一个特效了，因为小剧一直很喜欢flash站里的图像切换效果，以浏览器窗口为显示区域，并且富有动感的渐入渐出，和动态缩放更具酷炫效果很吸引人。<a href="http://bh-lay.com/share/2012-04-25/11.html" target="blank">效果体验</a></p>
+
+<h3>开发过程</h3>
+<p>自从接触到jquery之后，我发现其实这类效果是可以用js实现的，但由于是初次接触js，水平有限，就开始从简单的效果做起，起初只是点击出来大图，再点击关闭大图，毫无动画效果可言，但一次次的改进也使我很有成就感。</p>
+<p>从起初的几段代码到后来的函数相互调用，再到后来的函数封装，直到现在初具雏形的图像浏览器插件，一点点的进步使我感觉到勤于思考、循序渐进的学习方式对自己还是很有帮助的，由于该插件多少有点儿复杂，开发过程就不多说了，直接说说现在成型的插件吧！</p>
+<h3>插件分析</h3>
+<p>下载文件里的photoMode.js是封装好的完整的图像浏览器插件，CSS主要作用是美化界面你可以下载源码再研究。</p>
+<p>整个插件核心骨架只是change(src,alt)、 prev()、next()这三个函数，其余的代码纯粹是对整个图像浏览器起到锦上添花的作用。</p>
+<p><strong>change(src,alt)</strong>：这个函数在整个插件中所起到的作用是最大的，因为既然是图像浏览器，肯定就得有切换图片的功能，change(src,alt)就是做这件事情的函数。其工作原理是：接受传入新图片的地址（src）和标题（alt），改变图像的标题，渐隐当前图像，图像外框动态变化到新图片的尺寸，然后渐显新图片。这个过程很简单，但是开发时却碰到了火狐的一点小小的差异（见：<a href="http://bh-lay.com/Tutorials/design/2012-07-02/37.html" target="blank">火狐下用jquery更换图像src后获取图像尺寸异常的问题</a>）</p>
+<p><strong>prev()、next()</strong>：如果说change函数是杀人凶手的话，那prev()和next()就是不折不扣的幕后主使，因为无论是鼠标点击相应按钮，还是按下键盘的左右方向键，都是通过prev()、next()来调用change()函数实现效果的。</p>
+<p>在图像显示过程中，涉及到jquery对浏览器、元素位置及尺寸的定义还有滚动的计算，可以参考之前的一篇文章理解（<a href="http://bh-lay.com/Tutorials/design/2012-06-18/36.html" target="blank">图解JQUERY尺寸及位置定义</a>）。</p>
+<h3>如何使用插件</h3>
+<p>正确引用了jquery文件，再引入potoMode.js、potoMode.css，或者将potoMode.js和potoMode.css的内容分别写入你用使用的js与css即可。使用时按照下面书写代码即可：</p>
+<div class="codeArea">
+//通用格式<br/>
+$(你的选择器).photoMode();<br/><br/>
+//下面是示例<br/>
+$('#article img').photoMode();<br/>
+$('.section img').photoMode();<br/>
+$('#article img, .section img').photoMode();<br/>
+</div>
+<p><strong>注意：</strong>这里书写的选择器一定要是图片的路径。</p>
+<div class="labshow"><span>开始实验喽</span><a href="http://bh-lay.com/demo/lab/lab02.rar">源码下载</a><a href="http://bh-lay.com/share/2012-04-25/11.html" target="blank">体验效果</a></div>
+
+</div>
+</div>
+</body>
+</html>

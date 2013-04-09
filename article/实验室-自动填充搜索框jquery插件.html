@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html lang="zn-CH">
+<head>
+	<meta charset="gb2312">
+	<title>实验室-自动提示输入信息效果jquery插件</title>
+	<link href="images/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="containter">
+<div class="article">
+<h1>实验室-自动提示输入信息效果jquery插件</h1>
+<p>这是小剧实验室的第一篇文章，很是激动，就拿一个比较简单的特效来写吧。这是很多博客、留言等等都会用到的特效。其实这个效果很简单，就是每个输入框在输入之前都会有一个默认的值，点击之后自动清空，当输入框失去焦点的时候，如果没有输入任何字符，输入框再恢复为原来的默认值。下面是体验效果：</p>
+<input name="keyboard" type="text" value="点击一下" onclick="if (this.value=='点击一下') this.value=''" onblur="if (value ==''){value='点击一下'}"  style="width:200px;padding:10px;margin-left:200px;border:2px solid #aaa;"id="experience">
+<h3>实现这个效果最常见的做法如下：</h3>
+<div class="codeArea">
+&lt;input name="keyboard" type="text" size="10" id="keyboard" <br/>
+value="搜索站内内容" <br/>
+onclick="if (this.value=='搜索站内内容') this.value=''" onblur="if (value ==''){value='搜索站内内容'}"/&gt;<br/>
+</div>
+<p>很明显，这种js与html混杂在一起的写法很不利于页面的清洁和高效率的开发。于是就有了函数调用的写法，这里就不贴代码了，因为这样也并未真正做到js与html分离。比较专业一点儿的写法是下面这样的（这里使用的jquery框架）：</p>
+<div class="codeArea">
+//html部分<br/>
+&lt;input name="keyboard" type="text" size="10" id="keyboard" value="搜索站内内容"/&gt;<br/>
+<br/>
+//js部分<br/>
+$(docunment).ready(function(){<br/>
+　$('#keyboard').click(function(){<br/>
+　　if($(this).attr('value')=="搜索站内内容"){<br/>
+　　　$(this).attr('value','');<br/>
+　　}<br/>
+　});<br/>
+　$('#keyboard').blur(function(){<br/>
+　　if($(this).attr('value')=="") {<br/>
+　　　$(this).attr('value',"搜索站内内容");<br/>
+　　}<br/>
+　});<br/>
+});<br/>
+</div> 
+<p>这样，页面就简洁多了，但是代码优化到这儿就完事了么，当页面存在大量需要自动隐藏显示提示符的输入框时，岂不是每个地方都要写上这么一坨代码，很自然，你会想到封装函数，但函数一定好用么？小剧向来喜欢把问题纠结到无法继续纠结下去的地步，所以就有了今天要提出的插件。</p>
+<h3>关于自动提示输入信息效果jquery插件解释</h3>
+<p>下面是插件源码，这里小剧把实现效果的整段代码的核心部分提取出来，简化封装为这一插件。</p>
+<div class="codeArea">$.fn.autoKey=function(){<br/>
+　var searchBox = $(this);<br/>
+　var title=searchBox.val(); <br/>
+　searchBox.click(function(){if(searchBox.val()==title){searchBox.val("");}}).blur(function(){if(searchBox.val()=="") {searchBox.val(title);}}); <br/>
+　return searchBox;<br/>
+}<br/>
+</div>
+<h3>插件使用方法</h3>
+<p>因为插件就几行代码，所以没必要单独引用一个文件，只要你正确引用了jquery文件，再把插件代码拷贝到你的js文件中里，然后就可以随意使用了。</p>
+<div class="codeArea">
+//下面是插件源码<br/>
+$.fn.autoKey=function(){<br/>
+　var searchBox = $(this);<br/>
+　var title=searchBox.val(); <br/>
+　searchBox.click(function(){if(searchBox.val()==title){searchBox.val("");}}).blur(function(){if(searchBox.val()=="") {searchBox.val(title);}}); <br/>
+　return searchBox;<br/>
+}<br/>
+//上面是插件源码<br/>
+<br/>
+//通用格式<br/>
+$(你的选择器).autoKey();<br/>
+<br/>
+//下面是示例<br/>
+　$('#username').autoKey();<br/>
+　$('.check').autoKey();<br/>
+　$('#username, .check').autoKey();<br/>
+<br/>
+</div>
+<div class="labshow"><span>开始实验喽</span><a href="http://bh-lay.com/demo/lab/lab01.rar">源码下载</a><a href="#experience">体验效果</a></div>
+<p>效果实现起来很简单，如果你的网页中需要自动提示输入信息效果的效果，欢迎下载源码学习使用。</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+
+
+</div>
+</div>
+</body>
+</html>

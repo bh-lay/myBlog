@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html lang="zn-CH">
+<head>
+	<meta charset="gb2312">
+	<title>实验室-简单的瀑布流框架（无后台交互）</title>
+	<link href="images/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="containter">
+<div class="article">
+<h1>实验室-简单的瀑布流框架（无后台交互）</h1>
+<img src="images/简单的瀑布流框架.jpg" alt="" />
+<div class="labshow"><span>开始实验喽</span><a href="/topic/intiate.html" target="blank">体验效果</a></div>
+<p>最近一段时间小剧总是有总昏昏沉沉的感觉，总觉得需要醒醒脑。都说写作有利于保持冷静的头脑，这不，今天小剧就来写写之前做的一个简单的瀑布流效果的实现方法。</p>
+<h3>先简单介绍下小剧写的这个瀑布流吧：</h3>
+<p><strong>不足：</strong>该瀑布流效果并没有与后台交互，仅仅是对前端页面的处理，算不上真正意义上的瀑布流；并未对图像延迟显示做处理，因此显示时会因网速而有所差异；函数没有经过封装对html布局有要求，且依赖jquery。</p>
+<p><strong>亮点：</strong>判断添加新内容位置的方法较为简单；对默认页面显示条数、滚屏自动显示条数与点击添加条数可独立设置；为每条新添加出来的信息设置id，方便有针对性设置动画。</p>
+<h3>布局介绍</h3>
+<p>源文件html并不是用分列布局来显示的，页面加载完成之后，前台分条拷贝单个信息至数组boxer中，再清空信息将布局转换为四列，整个瀑布流依赖四列的这个布局来完成的，下面是布局详解表：</p>
+<div><img src="images/瀑布流布局详解.jpg" alt="" /></div>
+<h3>代码执行过程</h3>
+<p>代码的核心是show()这个函数，其作用是添加信息，参数是添加信息的条数，具体添加到哪一列的依据是判断hA、hB、hC、hD的高度，自动添加高度最小的那一列，相等则往左一列添加，数组用尽则从头循环添加。</p>
+<p>布局构建完成之后，调用show(8)函数在页面中添加八条信息。每当页面滚动至底部300像素内后（这里用定时器清除过多的滚动事件函数），自动添加四条信息。</p>
+<p>当整个页面信息超过四十条时，滚动就不再添加信息了，这时会显示【显示更多】按钮，每点击一次添加八条信息。</p>
+<p>整个效果的执行过程大致就是这样，css这里就不多说了，直接看代码吧。至于JS部分，小剧只是把需要的功能函数写出来，具体的优化一直是小剧的弱项，可能做得不是很好，希望你能给小剧提点意见，不甚感激。</p>
+<p>前面也说了，本效果从始至终并没有与后台交互。关于后台的操作，小剧正在学习之中，希望我能尽快在服务器交互方面有所成长，大家期待吧！</p>
+<h3>JS部分代码</h3>
+<blockquote class="codeArea">
+function waterfall(){<br />
+&nbsp;&nbsp; &nbsp;var box = $('#waterfall').children(&quot;dl&quot;);<br />
+&nbsp;&nbsp; &nbsp;var boxer = [];//存放内容的数组<br />
+&nbsp;&nbsp; &nbsp;var timer;<br />
+&nbsp;&nbsp; &nbsp;var total = box.length;<br />
+&nbsp;&nbsp; &nbsp;var dlNo=0;//页面中已经生成的dl数量<br />
+&nbsp;&nbsp; &nbsp;var i=0;//源dl的索引值<br />
+&nbsp;&nbsp; &nbsp;for(i;i&lt;total;i++){boxer.push(box.eq(i).html());}//获取源内容，生成数组<br />
+&nbsp;&nbsp; &nbsp;$('#waterfall').html(&quot;&lt;div class='col' id='colA'&gt;&lt;/div&gt;&lt;div class='col' id='colB'&gt;&lt;/div&gt;&lt;div class='col' id='colC'&gt;&lt;/div&gt;&lt;div class='col' id='colD'&gt;&lt;/div&gt;&lt;div id='addMore'&gt;显示更多&lt;/div&gt;&quot;);//生成新的框架结构<br />
+&nbsp;&nbsp; &nbsp;var colA=$('#colA');<br />
+&nbsp;&nbsp; &nbsp;var colB=$('#colB');<br />
+&nbsp;&nbsp; &nbsp;var colC=$('#colC');<br />
+&nbsp;&nbsp; &nbsp;var colD=$('#colD');<br />
+&nbsp;&nbsp; &nbsp;var hA,hB,hC,hD;//四栏的高度<br />
+&nbsp;&nbsp; &nbsp;function show(showdlNo){//添加新内容，参数为添加的数量<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;for(var n=0;n&lt;showdlNo;n++){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;hA = colA.height();<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;hB = colB.height();<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;hC = colC.height();<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;hD = colD.height();<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if(i==total){i=0}<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if(hA&lt;=hB&amp;&amp;hA&lt;=hC&amp;&amp;hA&lt;=hD){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;colA.append(&quot;&lt;dl id='wf&quot;+dlNo+&quot;'&gt;&quot;+boxer[i++]+&quot;&lt;/dl&gt;&quot;);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}else if(hB&lt;=hC&amp;&amp;hB&lt;=hD){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;colB.append(&quot;&lt;dl id='wf&quot;+dlNo+&quot;'&gt;&quot;+boxer[i++]+&quot;&lt;/dl&gt;&quot;);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}else if(hC&lt;=hD){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;colC.append(&quot;&lt;dl id='wf&quot;+dlNo+&quot;'&gt;&quot;+boxer[i++]+&quot;&lt;/dl&gt;&quot;);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}else{<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;colD.append(&quot;&lt;dl id='wf&quot;+dlNo+&quot;'&gt;&quot;+boxer[i++]+&quot;&lt;/dl&gt;&quot;);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;$('#wf'+dlNo++).fadeIn('300');<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}<br />
+&nbsp;&nbsp; &nbsp;}<br />
+&nbsp;&nbsp; &nbsp;show(8);//页面初始显示八个dl<br />
+&nbsp;&nbsp; &nbsp;$(window).scroll(function(){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if(dlNo&lt;40){//设置页面中的滚动可显示dl的数量<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;clearTimeout(timer);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;timer = setTimeout(function(){<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;if($(document).scrollTop()+$(window).height()&gt;$(document).height()-300){show(4);}<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;},500);<br />
+&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;}else{$('#addMore').fadeIn('200');}<br />
+&nbsp;&nbsp; &nbsp;});<br />
+&nbsp;&nbsp; &nbsp;$('#addMore').click(function(){show(8)});<br />
+}
+</blockquote>
+
+<p>CSS部分代码</p>
+<blockquote class="codeArea">
+#waterfall{margin-top:20px;overflow:hidden;}<br />
+#waterfall .col{width:25%;float:left;}<br />
+#waterfall dl{border:1px solid #bbb;background:#fff;margin:0px 10px 20px;display:none;border-radius:8px;overflow:hidden;box-shadow:2px 5px 10px #ccc;}<br />
+#waterfall dl dt{line-height:50px;font-size:18px;color:#05a;text-align:center;}<br />
+#waterfall dl dd{padding:10px;overflow:hidden;border-top:1px dashed #ddd;}<br />
+#waterfall dl dd img{width:180px;border:5px solid #eee;display:block;margin:auto;}<br />
+#waterfall dl dd p{font-size:14px;color:#666;margin:0px}<br />
+#waterfall dl dd.more{padding:0px;text-align:center;line-height:40px;font-size:16px;}<br />
+#waterfall dl a{display:block;color:#aaa;text-align:center;}<br />
+#waterfall dl a:hover{background:#f5f5f5;color:#05c}<br />
+#waterfall dl dt a{color:#05a;}
+</blockquote>
+
+
+</div>
+</div>
+</body>
+</html>

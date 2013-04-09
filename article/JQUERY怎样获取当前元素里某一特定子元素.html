@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN" >
+<head>
+<meta charset="GB2312">
+	<title>JQUERY怎样获取当前元素里某一特定子元素.html</title>
+    <link href="images/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="containter">
+<div class="article">
+	<h1>JQUERY怎样获取元素里某一特定子元素</h1>
+	<p>小剧不喜欢先学再用的学习模式，因为前期枯燥的学习会让小剧对学习失去兴趣。应用时的匮乏感则会使小剧丧失继续下去的信心。所以我喜欢在学习中应用，在应用中再学习。这不，我的困惑就是这样出来的，遇到一个问题，解决一个问题，然后又遇到一个问题。</p>
+	<p>之前做的一些JQUERY应用都是些很基础的编程，对于选择器要求不高，像类似于“$('.class')”、“$('#id')”、“$('#id>.class')”、“$(this)”、“$(this).parent()”、“$(this).children()”这些简单的语句都能解决的。</p>
+	<p>问题的出现是我要选择一个ul里某个的li中的一个span，因为要利于编程，li是用 $('ul>li').eq(i) 来做的选择，虽然问题还是能用之前的方法解决，但总感觉代码有点臃肿,而且效率也很低下。既然JQUERY被誉为目前所有JS框架中最高效的代码，不可能连这个问题都要用一大坨代码来解决吧！</p>
+	<p>回头再翻翻JQUERY的API，才发现有一个非常适合这个场合使用的语句我一直没有注意过。那就是：$(选择器一).find(选择器二)。之前虽然读过find这段介绍，但一直因为用不到而被忽视。</p>
+	<h3>这里说说find()的使用方法</h3>
+	<p><strong>API提供的的解释：</strong>搜索所有与指定表达式匹配的元素。这个函数是找出正在处理的元素的后代元素的好方法。</p>
+	<p><strong>使用方法：</strong>$(选择器一).find(选择器二)；</p>
+	<p>以小剧客栈首页的焦点图,查找类为“.focusphoto”的DL下DD中的span并将其作淡出处理为例：</p>
+    <p>$('.focusphoto>dl>dd).eq(i).find(”span”).fadeOut('slow');</p>
+	<h3>谈谈小剧对find()的理解</h3>
+	<p>我这个应用实际上完全可以用children()来代替，但这并不是说find()和children()的用法是一样的，如果是这样的话find()的存在便没有了意义。在查询深度为一级的时候，这两者有相同之处，但区别就在于：find()是子查询选择器，它可以深入到子级的下层进行查询选择；而children():只是子级选择器，它只能选择下一层级的元素。
+</p>
+	<p>当然，以上仅仅是剧中人的一点拙见，如有错误或不完善的地方，请给于指正，谢谢！</p>
+</div></div>
+</body>
+</html>

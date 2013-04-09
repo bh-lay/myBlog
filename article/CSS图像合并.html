@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="zn-CH">
+<head>
+	<meta charset="gb2312">
+	<title>谈谈CSS图像合并的应用</title>
+	<link href="images/style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="article">
+<h1>小剧谈谈CSS图像合并的应用</h1>
+<p>两天前有位设计朋友问到小剧：我刚刚发现腾讯的注册页面怎么保存下来只有一张图片啊(下图)？</p>
+<div class="center"><img src="images/Sprites-1.jpg"/><img src="images/Sprites-2.jpg"/></div>
+<p>当时我就和他解释了下这张图的作用及原理，顺便引出了CSS Sprites这一设计技巧。</p>
+<p>其实网页设计中一直有着很多小技巧，CSS Sprites（译为：CSS图像合并技术）只是其中一个。关于CSS图像合并网上有很多教程，最早的，也是流传最广的是一篇翻译自国外的教程：<a href="http://www.chinaz.com/web/2009/0525/77212.shtml">CSS Sprites (CSS图像拼合技术)教程</a></p>
+<p>然而现实是有很多设计师并没有拼合图像的习惯，几位朋友也说了下他们不使用CSS图像合并的原因。最多的说法是：多了切图、测量的步骤，使得开发变的复杂化，还有就是网站流量不多，图像合并对减轻服务器负担的效果不明显等等。其实他们说的也挺有道理，但小剧客栈从建立到现在一直坚持使用图像合并技术，因为小剧对于代码和数据的优化有着钻牛角尖的执着。</p>
+<h3>小剧坚持使用CSS图像合并的理由</h3>
+<p><strong>1、减少服务器请求</strong>，这一条也正是CSS图像合并技术迅速流行起来的原因之一。因为小剧客栈是剧中人的个人博客，为了保证页面的简洁，博客没有添加任何广告，所以小剧租用的是比较廉价的服务器，但凡是能减少服务器压力的方法，小剧都会努力去尝试。</p>
+<p><strong>2、缩小整体图像的体积</strong>，因为两幅图像合并到同一个图像上，虽然面积相较于之前分散的图像较大一点，但合并之后的图像字节数会明显小于合并之前的字节数。</p>
+<p><strong>3、CSS调用方便</strong>，这一点很少有设计师提到，然而小剧喜欢CSS图像合并技术的很大一部分原因就在这儿，这里我就拿小剧客栈的工具栏作为例子吧。</p>
+<div class="center"><img src="images/Sprites-3.gif"/></div>
+<div class="codeArea">
+.ico{<br/>
+&#12288width:50px;<br/>
+&#12288height:50px;<br/>
+&#12288background-image:url('toolbar.png');<br/>
+}<br/>
+.backtop {background-position: 0 0px;}<br/>
+.reply {background-position: 0 -150px;}<br/>
+</div>
+<p>因为工具栏上每个图标都有“ico”这个类，通过“ico”给所有图标设置同一个背景，这样小剧只要给每个元素设置“background-position”即可通过更改显示区域为图标设置不同的背景。</p>
+<p><strong>4、前端工作要求</strong>，这句话应该是最实在的，因为在实际的大项目中（这里指的是特别大的项目，比如腾讯网首页、新浪微博、京东商城等等），前端设计对数据的优化远比小剧的钻牛角尖的执着要严苛的多，所以养成良好的优化习惯也是以后成长的垫脚石。</p>
+<h3>CSS图像合并的一般制作方法及注意事项</h3>
+<p><strong>制作方法</strong>：和正常的页面开发流程一样，只是在切好图之后稍稍有所不同。把同一类型的背景及图标放在同一个图片文件中，彼此留出一定间距，在CSS定义背景的时候先把在合并在同一图上需要调用的类写在一起，调用图片，再分别对每个图标进行设置，下面为示例。</p>
+<div class="codeArea">
+.ab, .cd, .ef{<br/>
+&#12288width:50px;<br/>
+&#12288height:50px;<br/>
+&#12288background-image:url('toolbar.png');<br/>
+}<br/>
+.ab {background-position: 0 0px;}<br/>
+.cd {background-position: -5 -10px;}<br/>
+.ef {background-position: -5 -20px;}<br/>
+</div>
+<p><strong>需要注意的是</strong>：1、确定不会更改或者更改的机率较小的图像放在合并后的图像靠左上角；2、在做图像偏移量计算的时候，是从图片左上角开始计算，并且是用负值，避免使用left、top之类的设置；3、图片与图片之间留出一定的距离，小剧习惯于留出一个像素的距离，这个视个人习惯而定；4、需要水平平铺或垂直平铺的图像跨整个图像的宽度或高度，水平和垂直都需要平铺的图像不能放在合并图像里……</p>
+<p>当然，这里只是小剧对图像合并技术的一点点理解，说的不够全面，想要掌握得更加熟练还需要在实际的使用中慢慢体会。</p>
+<p>　</p>
+<p>　</p>
+<p>　</p>
+
+
+</div>
+</body>
+</html>

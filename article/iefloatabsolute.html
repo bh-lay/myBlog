@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="images/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div>
+  <h4> ie6使用绝对定位position：<a name="baidusnap1"></a><strong>absolute</strong>，box不显示  IE6，<a name="baidusnap0"></a><strong>浮动</strong>遇到绝对定位</h4>
+</div>
+
+
+
+<p>小剧客栈是我2012年3月28创建的个人博客，话说到今天也没几天。自认为做了一个很有难度的网站屁颠屁颠的逛来逛去，也没有用IEtest验证一下，回到家里我就向室友炫耀了一下。结果这一炫耀让我糗大了，在他那神奇的ie6我的博客右边的侧边栏不见了。</p>
+<p>灰溜溜的我赶紧跑回去查找原因。在测试的时候发现，在firefox、ie9、ie8、ie7、opera下都可以正常显示，可是到了IE6的时候，所有页面中的这块侧边栏内容都不见了。</p>
+<p>下面是简化后的出现问题的代码：</p>
+<div class="smalltext">
+  <p>CSS<br />
+    .containter {margin: 0px auto; width: 960px; position: relative;}<br />
+    .main {width: 720px; float：left;}<br />
+  .sidebar {position: absolute; left: 708px; top: 0px; width: 252px; overflow: visible;}</p>
+</div>
+<div class="smalltext">
+  <p>HTML<br />
+    &lt;div class=&quot;containter&quot;&gt;<br /> 　
+&lt;div class=&quot;main&quot;&gt;   ...   &lt;/div&gt;<br /> 　
+&lt;div class=&quot;sidebar&quot;&gt;   ...   &lt;/div&gt;<br /> 　
+&lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;<br />
+&lt;/div&gt;</p>
+</div>
+<p>&nbsp;</p>
+<p>经过几番折腾，总出找出毛病了，原来是因为使用绝对定位的sidebar紧挨着的是main使用了<strong>浮动</strong>：float。</p>
+<p>折腾又折腾，我发现既然sidebar是绝对定位，而且其高度肯定是不main小的。于是我就把“main”的float去掉了，问题解决了。再分析发现html中的class为clear的div也不需要，于是把它也消灭掉了。</p>
+<p>至此我的问题解决掉了，我也从中又“学”到IE6的一大BUG。</p>
+<h3>下面是我搜索整理的这类情况的原因及决绝办法：</h3>
+<p>IE6，<strong>浮动</strong>遇到绝对定位</p>
+<p>本来两个不相同的东西，在IE6下硬是会擦出火花....</p>
+<p>当一个元素内有一个块级元素并占据整行的时候，让它<strong>浮动</strong>，然后在它后面的行内元进行绝对定位（父级元素进行相对定位），在其他浏览器下都能正常显示，在IE6下会莫名其妙的<a name="baidusnap2"></a><strong>消失</strong>。</p>
+<p>&lt;div&gt;&lt;ul&gt;&lt;ul&gt;&lt;a&gt;&lt;/a&gt;&lt;/div&gt;</p>
+<p>尝试改变ul的长度，或者取消<strong>浮动</strong>都可以让IE6正常显示，莫非IE6下，绝对定位元素被覆盖掉了？但是在取消<strong>浮动</strong>下可以正常显示，那么在<strong>浮动</strong>下才会被覆盖？应该是ie6的bug.</p>
+<p>再尝试下有没其他解决办法，在&lt;a&gt;&lt;/a&gt;外面套个行内元素，结果发现还是不行，试了下讨个块级元素，^.^哈哈，可以了，难道块级元素进行绝对定位就可以不平<strong>浮动</strong>了？尝试直接用块级元素或者把行内元素的display改为block，然后进行绝对定位，结果发现还是不行.................- -#。</p>
+<p>得出的结论:IE6下，绝对定位元素与<strong>浮动</strong>元素有重叠会导致绝对定位元素<strong>消失</strong>。</p>
+<h3>解决办法：</h3>
+<ol>
+  <li>不相重叠。</li>
+  <li>改变其中一种效果。</li>
+  <li>在绝对定位元素外面套个块级元素，让他们直接接触。</li>
+</ol>
+</body>
+</html>
